@@ -83,18 +83,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        print("YOO YOU IN HERE DOH?")
         
         if let image = info[UIImagePickerController.InfoKey.originalImage] {
             self.imageViewer.image = (image as! UIImage)
         }
-        print("YOO YOU IN HERE DOH?2")
+
         self.topTextField.isHidden = false
         self.topTextField.text = "TOP"
-        print("YOO YOU IN HERE DOH?3")
+
         self.bottomTextField.isHidden = false
         self.bottomTextField.text = "BOTTOM"
-        print("YOO YOU IN HERE DOH?4")
+
         self.shareButton.isEnabled = true
         
         dismiss(animated: true, completion: nil)
