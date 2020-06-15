@@ -21,9 +21,17 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lw1-kO-eaK" userLabel="Top Toolbar">
                                 <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                 <items>
-                                    <barButtonItem title="Item" image="square.and.arrow.up" catalog="system" id="O6Q-oV-8ez" userLabel="Share"/>
+                                    <barButtonItem title="Item" image="square.and.arrow.up" catalog="system" id="O6Q-oV-8ez" userLabel="Share">
+                                        <connections>
+                                            <action selector="share:" destination="BYZ-38-t0r" id="EHR-G9-NKh"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Zeq-8t-SdB"/>
-                                    <barButtonItem title="Cancel" id="BNW-b6-glP" userLabel="Cancel"/>
+                                    <barButtonItem title="Cancel" id="BNW-b6-glP" userLabel="Cancel">
+                                        <connections>
+                                            <action selector="cancelClicked:" destination="BYZ-38-t0r" id="weX-Zv-nob"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="An7-4B-J7Z" userLabel="Bottom Toolbar">
@@ -44,25 +52,25 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="38G-VV-9wp"/>
                                 </items>
                             </toolbar>
-                            <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jNd-IJ-CYM" userLabel="Top TextField">
-                                <rect key="frame" x="20" y="126" width="374" height="87"/>
+                            <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Y95-Y6-wqR" userLabel="Bottom TextField">
+                                <rect key="frame" x="20" y="729" width="374" height="68"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Y95-Y6-wqR" userLabel="Bottom TextField">
-                                <rect key="frame" x="20" y="715" width="374" height="67"/>
+                            <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jNd-IJ-CYM" userLabel="Top TextField">
+                                <rect key="frame" x="20" y="106" width="374" height="87"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="jNd-IJ-CYM" firstAttribute="top" secondItem="c2d-b6-FAv" secondAttribute="top" constant="38" id="2B5-iO-J1U"/>
+                            <constraint firstItem="jNd-IJ-CYM" firstAttribute="top" secondItem="c2d-b6-FAv" secondAttribute="top" constant="18" id="2B5-iO-J1U"/>
                             <constraint firstItem="jNd-IJ-CYM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="37H-qZ-Nof"/>
                             <constraint firstItem="An7-4B-J7Z" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="A8v-o9-vRE"/>
-                            <constraint firstItem="Y95-Y6-wqR" firstAttribute="bottom" secondItem="c2d-b6-FAv" secondAttribute="bottom" constant="-31" id="APa-6x-lUy"/>
+                            <constraint firstItem="Y95-Y6-wqR" firstAttribute="bottom" secondItem="c2d-b6-FAv" secondAttribute="bottom" constant="-16" id="APa-6x-lUy"/>
                             <constraint firstItem="An7-4B-J7Z" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="D9P-t5-rXr"/>
                             <constraint firstItem="An7-4B-J7Z" firstAttribute="top" secondItem="c2d-b6-FAv" secondAttribute="bottom" id="JII-3w-BZQ"/>
                             <constraint firstItem="Y95-Y6-wqR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="OU1-Nh-NsI"/>
@@ -84,9 +92,12 @@
                     </view>
                     <connections>
                         <outlet property="bottomTextField" destination="Y95-Y6-wqR" id="wfR-lY-9ij"/>
+                        <outlet property="bottomToolBar" destination="An7-4B-J7Z" id="IUF-Ru-yap"/>
                         <outlet property="cameraButton" destination="S0h-yi-6Wo" id="KSp-cz-o4r"/>
                         <outlet property="imageViewer" destination="c2d-b6-FAv" id="pgx-ep-2n6"/>
+                        <outlet property="shareButton" destination="O6Q-oV-8ez" id="auW-EA-GLK"/>
                         <outlet property="topTextField" destination="jNd-IJ-CYM" id="Ixq-Fm-TKb"/>
+                        <outlet property="topToolBar" destination="lw1-kO-eaK" id="rQF-xv-HIW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

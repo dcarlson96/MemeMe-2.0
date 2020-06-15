@@ -14,6 +14,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var topTextField: UITextField!
     @IBOutlet weak var bottomTextField: UITextField!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
+    @IBOutlet weak var topToolBar: UIToolbar!
+    @IBOutlet weak var bottomToolBar: UIToolbar!
+    
+    var savedMeme: Meme?
     
     let memeTextAttributes: [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.strokeColor: UIColor.black,
@@ -22,12 +27,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSAttributedString.Key.strokeWidth:  -4.0
     ]
     
-    var topHasBeenEditted: Bool = false
+    struct Meme {
+        var topText: String?
+        var bottomText: String?
+        var originalImage: UIImage?
+        var memedImage: UIImage?
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         self.cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         self.topTextField.isHidden = true
         self.bottomTextField.isHidden = true
+        self.shareButton.isEnabled = false
         
         subscribeToShowingKeyboardNotifications()
         subscribeToHidingKeyboardNotifications()
@@ -72,15 +83,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
+        print("YOO YOU IN HERE DOH?")
+        
         if let image = info[UIImagePickerController.InfoKey.originalImage] {
             self.imageViewer.image = (image as! UIImage)
         }
-        
+        print("YOO YOU IN HERE DOH?2")
         self.topTextField.isHidden = false
         self.topTextField.text = "TOP"
-        
+        print("YOO YOU IN HERE DOH?3")
         self.bottomTextField.isHidden = false
         self.bottomTextField.text = "BOTTOM"
+        print("YOO YOU IN HERE DOH?4")
+        self.shareButton.isEnabled = true
         
         dismiss(animated: true, completion: nil)
     }
@@ -100,14 +115,48 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             true, completion: nil)
     }
     
+    @IBAction func cancelClicked(_ sender: Any) {
+        cancel()
+        
+    }
+    
+    @IBAction func share(_ sender: Any) {
+        let memeImage = generateMemedImage()
+        let controller = UIActivityViewController(activityItems: [memeImage], applicationActivities: nil)
+        controller.completionWithItemsHandler = {(type, complete, returned, error) in
+            
+            if type == nil {
+                print("canceling...")
+            }
+            else if complete {
+                print("completedd....")
+                self.save()
+            }
+            else {
+                print("There was an error")
+            }
+            
+        }
+        present(controller, animated: true, completion: nil)
+    }
+    
+    func cancel() {
+        self.imageViewer.image = nil
+        self.topTextField.isHidden = true
+        self.bottomTextField.isHidden = true
+        self.shareButton.isEnabled = false
+    }
+    
     @objc func keyboardWillHide(_ notification:Notification) {
-
-        view.frame.origin.y += getKeyboardHeight(notification)
+        if view.frame.origin.y != 0 {
+            view.frame.origin.y += getKeyboardHeight(notification)
+        }
     }
     
     @objc func keyboardWillShow(_ notification:Notification) {
-
-        view.frame.origin.y -= getKeyboardHeight(notification)
+        if bottomTextField.isEditing {
+            view.frame.origin.y -= getKeyboardHeight(notification)
+        }
     }
 
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
@@ -132,6 +181,30 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    func save() {
+            // Create the meme
+            let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: imageViewer.image!, memedImage: generateMemedImage())
+    }
+    
+    func generateMemedImage() -> UIImage {
+
+        //Hide toolbar and navbar
+        topToolBar.isHidden = true
+        bottomToolBar.isHidden = true
+        
+        // Render view to an image
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+
+        //Show toolbar and navbar
+        topToolBar.isHidden = false
+        bottomToolBar.isHidden = false
+
+        return memedImage
     }
 
 }
